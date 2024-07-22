@@ -46,7 +46,6 @@ stages:
               dockerSc: ${{ parameters.dockerSc }}
               containerRepository: ${{ parameters.containerRepository }}
               sonarProjectname: ${{ parameters.sonarProjectname }}
-              snykSc: ${{ parameters.snykSc }}
   - stage: DeployApp
     displayName: 'Deploy App'
     pool:

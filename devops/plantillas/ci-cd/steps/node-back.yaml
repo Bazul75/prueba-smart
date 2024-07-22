@@ -73,16 +73,7 @@ steps:
   - task: Docker@2
     inputs:
       containerRegistry: '${{ parameters.dockerSc }}'
-      repository: 'Bazul98/${{ parameters.containerRepository }}'
+      repository: 'bazul98/${{ parameters.containerRepository }}'
       command: 'buildAndPush'
       Dockerfile: '$(System.DefaultWorkingDirectory)/**/Dockerfile'
-    displayName: 'Build Image'
-
-  - task: SnykSecurityScan@1
-    inputs:
-      serviceConnectionEndpoint: '${{ parameters.snykSc }}'
-      testType: 'container'
-      dockerImageName: 'docker.io/Bazul98/${{ parameters.containerRepository }}:$(Build.BuildId)'
-      monitorWhen: 'always'
-      failOnIssues: false
-    displayName: 'Snyk Security Scan'
+    displayName: 'Build and Push Image'
