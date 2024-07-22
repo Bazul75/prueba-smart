@@ -450,16 +450,16 @@ stages:
 - Las variables las debemos almacenar en un variablegroup, que para este caso se llama prueba-smart. Aquí se almacenan las credenciales de las bases de datos y los service connection que se utilizan en todo el proyecto.
 
 - trigger: Define las ramas que activarán la ejecución del pipeline. En este caso, cualquier cambio en las ramas master o test activará el pipeline.
-- variables: Define un grupo de variables llamado devsu-app. Los grupos de variables son colecciones de variables que pueden ser reutilizadas en múltiples pipelines.
+- variables: Define un grupo de variables llamado smart-app. Los grupos de variables son colecciones de variables que pueden ser reutilizadas en múltiples pipelines.
 - stages: Define las etapas del pipeline utilizando un template externo ubicado en ./devops/plantillas/ci-cd/stages/cicd-stages.yaml.
 
 **Parámetros del Template**
 
 - nodeVersion: La versión de Node.js que se instalará (18).
-- sonarSc: La conexión de servicio a SonarCloud, referenciada como $(sonarSc) desde las variables definidas en el grupo de variables devsu-app.
-- sonarProjectname: El nombre del proyecto en SonarCloud (prueba-devsu).
-- dockerSc: La conexión de servicio al registro Docker, referenciada como $(dockerSc) desde las variables definidas en el grupo de variables devsu-app.
-- containerRepository: El repositorio de contenedores donde se publicará la imagen, referenciado como $(containerRepository) desde las variables definidas en el grupo de variables devsu-app.
+- sonarSc: La conexión de servicio a SonarCloud, referenciada como $(sonarSc) desde las variables definidas en el grupo de variables smart-app.
+- sonarProjectname: El nombre del proyecto en SonarCloud (prueba-smart).
+- dockerSc: La conexión de servicio al registro Docker, referenciada como $(dockerSc) desde las variables definidas en el grupo de variables smart-app.
+- containerRepository: El repositorio de contenedores donde se publicará la imagen, referenciado como $(containerRepository) desde las variables definidas en el grupo de variables smart-app.
 - azureSc: Service connection al grupo de recursos en donde se encuentra el appservice.
 - appServiceName: Nombre del appservice donde se alojara la aplicacion.
 
