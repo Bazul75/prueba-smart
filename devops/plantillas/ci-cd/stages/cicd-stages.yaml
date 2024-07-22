@@ -11,18 +11,9 @@ parameters:
   - name: containerRepository
     type: string
     default: 'prueba-smart'
-  - name: k8sSc
-    type: string
-    default: 'k8s-sc'
-  - name: pathToManifest
-    type: string
-    default: 'kubernetes/deploy.yaml'
   - name: sonarProjectname
     type: string
     default: 'smart-app'
-  - name: snykSc
-    type: string
-    default: 'snyk-sc'
   - name: azureSc
     type: string
     default: 'azure-sc'

@@ -1,0 +1,23 @@
+trigger: none
+
+schedules:
+  - cron: "0 * * * *"
+    displayName: Hourly Python Script Execution
+    branches:
+      include:
+      - main  
+    always: true  
+
+jobs:
+- job: ExecutePythonScript
+  pool:
+    vmImage: 'ubuntu-latest'  
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.8'  
+      addToPath: true
+
+  - script: |
+      python devops/scripts/verificar-servidor.py
+    displayName: 'Run Python script'
