@@ -7,5 +7,4 @@ steps:
       WebAppName: '${{ parameters.appServiceName }}'
       DockerNamespace: 'https://index.docker.io'
       DockerRepository: 'bazul98/${{ parameters.containerRepository}}'
-      DockerImageTag: '$(Build.BuildId)'
     displayName: 'Deploy to Azure App Service'

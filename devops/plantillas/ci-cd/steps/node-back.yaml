@@ -76,4 +76,5 @@ steps:
       repository: 'bazul98/${{ parameters.containerRepository }}'
       command: 'buildAndPush'
       Dockerfile: '$(System.DefaultWorkingDirectory)/**/Dockerfile'
+      tags: 'latest'
     displayName: 'Build and Push Image'
