@@ -74,7 +74,7 @@ steps:
     inputs:
       containerRegistry: '${{ parameters.dockerSc }}'
       repository: 'Bazul98/${{ parameters.containerRepository }}'
-      command: 'build'
+      command: 'buildAndPush'
       Dockerfile: '$(System.DefaultWorkingDirectory)/**/Dockerfile'
     displayName: 'Build Image'
 
@@ -86,11 +86,3 @@ steps:
       monitorWhen: 'always'
       failOnIssues: false
     displayName: 'Snyk Security Scan'
-
-  - task: Docker@2
-    inputs:
-      containerRegistry: '${{ parameters.dockerSc }}'
-      repository: 'Bazul98/${{ parameters.containerRepository }}'
-      command: 'push'
-      Dockerfile: '$(System.DefaultWorkingDirectory)/**/Dockerfile'
-    displayName: 'Push Image'
