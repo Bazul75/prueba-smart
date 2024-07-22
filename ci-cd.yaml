@@ -15,4 +15,4 @@ stages:
     containerRepository: $(containerRepository)
     azureSc: $(azureSc)
     appServiceName: $(appServiceName)
-    snyk-sc: $(snykSc)
+    snykSc: $(snykSc)
