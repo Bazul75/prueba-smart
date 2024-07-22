@@ -20,7 +20,7 @@ parameters:
   - name: sonarProjectname
     type: string
     default: 'smart-app'
-  - name: snyk-sc
+  - name: snykSc
     type: string
     default: 'snyk-sc'
   - name: azureSc
@@ -46,7 +46,7 @@ stages:
               dockerSc: ${{ parameters.dockerSc }}
               containerRepository: ${{ parameters.containerRepository }}
               sonarProjectname: ${{ parameters.sonarProjectname }}
-              snyk-sc: ${{ parameters.snyk-sc }}
+              snykSc: ${{ parameters.snykSc }}
   - stage: DeployApp
     displayName: 'Deploy App'
     pool:

@@ -80,7 +80,7 @@ steps:
 
   - task: SnykSecurityScan@1
     inputs:
-      serviceConnectionEndpoint: '${{ parameters.snyk-sc }}'
+      serviceConnectionEndpoint: '${{ parameters.snykSc }}'
       testType: 'container'
       dockerImageName: '${{ parameters.containerRepository }}'
       monitorWhen: 'always'
