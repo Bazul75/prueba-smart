@@ -82,7 +82,7 @@ steps:
     inputs:
       serviceConnectionEndpoint: '${{ parameters.snykSc }}'
       testType: 'container'
-      dockerImageName: '${{ parameters.containerRepository }}:$(Build.BuildId)'
+      dockerImageName: 'docker.io/${{ parameters.containerRepository }}:$(Build.BuildId)'
       monitorWhen: 'always'
       failOnIssues: false
     displayName: 'Snyk Security Scan'
