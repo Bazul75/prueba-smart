@@ -3,16 +3,16 @@ trigger:
 - test
 
 variables:
-- group: devsu-app
+- group: smart-app
 
 stages:
 - template: './devops/plantillas/ci-cd/stages/cicd-stages.yaml'
   parameters:
-    agent: 'pruebas'
     nodeVersion: 18
     sonarSc: $(sonarSc)
-    sonarProjectname: 'prueba-devsu'
+    sonarProjectname: 'prueba-smart'
     dockerSc: $(dockerSc)
     containerRepository: $(containerRepository)
-    k8sSc: $(k8sSc)
-    pathToManifest: '$(system.defaultWorkingDirectory)/devops/kubernetes/deploy.yaml'
+    azureSc: $(azureSc)
+    appServiceName: $(appServiceName)
+    snyk-sc: $(snykSc)
