@@ -1,0 +1,96 @@
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: ${{ parameters.nodeVersion }}
+    displayName: "Install Node.js"
+
+  - task: sonarcloud-create-project@1
+    displayName: "Create SonarCloud Project"
+    inputs:
+      SonarCloud: ${{ parameters.sonarSc }}
+      sonarOrganization: 'josedanielbaena'
+      serviceKey: ${{ parameters.sonarProjectname }}
+      serviceName: ${{ parameters.sonarProjectname }}
+      createProject: 'true'
+      visibility: 'public'
+      long_live_branches: '(master|qa)'
+      sonarQualityGate: '9'
+    
+  - task: SonarCloudPrepare@2
+    inputs:
+      SonarCloud: ${{ parameters.sonarSc }}
+      organization: 'josedanielbaena'
+      scannerMode: 'CLI'
+      configMode: 'manual'
+      cliProjectKey: ${{ parameters.sonarProjectname }}
+      cliProjectName: ${{ parameters.sonarProjectname }}
+      cliSources: '.'
+      extraProperties: |
+        # Additional properties that will be passed to the scanner, 
+        # Put one key=value per line, example:
+        # sonar.exclusions=**/*.bin
+        sonar.javascript.lcov.reportPaths=coverage/lcov.info
+
+  - script: |
+        npm install
+    displayName: 'Install dependencies'
+
+  - script: |
+        npm test
+    displayName: 'Run tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/*.xml'
+      failTaskOnFailedTests: true
+      failTaskOnFailureToPublishResults: true
+      testRunTitle: 'publish'
+    displayName: "Publish test results"
+
+  - task: publishCodeCoverageResults@2
+    inputs:
+      summaryFileLocation: '**/coverage/*.xml'
+      failIfCoverageEmpty: true
+    displayName: "Publish code coverage"
+
+  - task: SonarCloudAnalyze@2
+    inputs:
+      jdkVersion: 'JAVA_HOME_21_X64'
+    displayName: "Run SonarCloud Analysis"
+
+  - task: SonarCloudPublish@2
+    inputs:
+      pollingTimeoutSec: '300'
+    displayName: "Publish SonarCloud Analysis"
+
+  - task: sonarcloud-buildbreaker@2
+    inputs:
+      SonarCloud: ${{ parameters.sonarSc }}
+      organization: 'josedanielbaena'
+    displayName: "SonarCloud Build Breaker"
+
+  - task: Docker@2
+    inputs:
+      containerRegistry: '${{ parameters.dockerSc }}'
+      repository: 'Bazul98/${{ parameters.containerRepository }}'
+      command: 'build'
+      Dockerfile: '$(System.DefaultWorkingDirectory)/**/Dockerfile'
+    displayName: 'Build Image'
+
+  - task: SnykSecurityScan@1
+    inputs:
+      serviceConnectionEndpoint: '${{ parameters.snyk-sc }}'
+      testType: 'container'
+      dockerImageName: '${{ parameters.containerRepository }}'
+      monitorWhen: 'always'
+      failOnIssues: false
+    displayName: 'Snyk Security Scan'
+
+  - task: Docker@2
+    inputs:
+      containerRegistry: '${{ parameters.dockerSc }}'
+      repository: 'Bazul98/${{ parameters.containerRepository }}'
+      command: 'push'
+      Dockerfile: '$(System.DefaultWorkingDirectory)/**/Dockerfile'
+    displayName: 'Push Image'

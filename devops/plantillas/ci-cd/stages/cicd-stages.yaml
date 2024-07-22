@@ -1,0 +1,63 @@
+parameters:
+  - name: nodeVersion
+    type: string
+    default: '18'
+  - name: sonarSc
+    type: string
+    default: 'sonar-sc'
+  - name: dockerSc
+    type: string
+    default: 'dockerhub-sc'
+  - name: containerRepository
+    type: string
+    default: 'prueba-smart'
+  - name: k8sSc
+    type: string
+    default: 'k8s-sc'
+  - name: pathToManifest
+    type: string
+    default: 'kubernetes/deploy.yaml'
+  - name: sonarProjectname
+    type: string
+    default: 'smart-app'
+  - name: snyk-sc
+    type: string
+    default: 'snyk-sc'
+  - name: azureSc
+    type: string
+    default: 'azure-sc'
+  - name: appServiceName
+    type: string
+    default: 'smart-app'
+
+stages:
+  - stage: BuildNodeApp
+    displayName: 'Build Node App'
+    pool:
+      vmImage: ubuntu-latest
+    jobs:
+      - job: BuildNode
+        displayName: 'Build Node App'
+        steps:
+          - template: ../steps/node-back.yaml
+            parameters:
+              nodeVersion: ${{ parameters.nodeVersion }}
+              sonarSc: ${{ parameters.sonarSc }}
+              dockerSc: ${{ parameters.dockerSc }}
+              containerRepository: ${{ parameters.containerRepository }}
+              sonarProjectname: ${{ parameters.sonarProjectname }}
+              snyk-sc: ${{ parameters.snyk-sc }}
+  - stage: DeployApp
+    displayName: 'Deploy App'
+    pool:
+      vmImage: ubuntu-latest
+    dependsOn: BuildNodeApp
+    jobs: 
+      - job: DeployAppService
+        displayName: 'Deploy App to App Service'
+        steps:
+          - template: ../steps/deploy-appservice.yaml
+            parameters:
+              azureSc: ${{ parameters.azureSc }}
+              containerRepository: ${{ parameters.containerRepository }}
+              appServiceName: ${{ parameters.appServiceName }}

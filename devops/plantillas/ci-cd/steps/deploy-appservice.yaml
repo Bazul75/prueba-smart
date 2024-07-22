@@ -1,0 +1,11 @@
+steps:
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: '${{ parameters.azureSc }}'
+      appType: 'webAppContainer'
+      WebAppName: '${{ parameters.appServiceName }}'
+      DockerNamespace: 'https://index.docker.io'
+      DockerRepository: 'bazul98/${{ parameters.containerRepository}}'
+      DockerImageTag: '$(Build.BuildId)'
+    displayName: 'Deploy to Azure App Service'
